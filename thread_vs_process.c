@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <time.h>
 #include "thread_vs_process_utils.h"
 
 /*Return type pointer to void so can be any return type, argument a voidpointer
@@ -13,10 +19,11 @@ void measure_thread()
 
   /* get a monotonic timestamp and store it in start*/
   clock_gettime(CLOCK_MONOTONIC, &start);
-  int thread = pthread_create(&pthread_id, NULL, thread_timer, NULL);
 
   for (int i = 0; i < ITERATIONS; i++)
+
   {
+    int thread = pthread_create(&pthread_id, NULL, thread_timer, NULL);
     if (thread != 0)
     {
       fprintf(stderr, "Could not create thread! \n");
@@ -38,12 +45,11 @@ void measure_process()
   struct timespec start, end;
   pid_t pid;
 
-  pid = fork();
-
   clock_gettime(CLOCK_MONOTONIC, &start);
 
   for (int i = 0; i < ITERATIONS; i++)
   {
+    pid = fork();
     if (pid < 0)
     {
       fprintf(stderr, "Could not create process! \n");
@@ -51,6 +57,10 @@ void measure_process()
     }
 
     if (pid == 0)
+    {
+      exit(0);
+    }
+    else if (pid == 1)
     {
       exit(0);
     }

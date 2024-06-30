@@ -1,12 +1,10 @@
 #ifndef THREAD_VS_PROCESS_UTILS_H
 #define THREAD_VS_PROCESS_UTILS_H
 
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <time.h>
+void* thread_timer(void*);
+void* process_timer(void*);
+void measure_thread();
+void measure_process();
 
 #define ITERATIONS 1000
 
